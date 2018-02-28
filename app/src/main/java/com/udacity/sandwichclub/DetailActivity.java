@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -43,12 +46,13 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
 
         setTitle(sandwich.getMainName());
+
     }
 
     private void closeOnError() {
@@ -56,7 +60,29 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+        TextView description = (TextView) findViewById(R.id.description_tv);
+        TextView origin = (TextView) findViewById(R.id.origin_tv);
+        TextView ingredients = (TextView) findViewById(R.id.ingredients_tv);
+        TextView alsoKnownAs = (TextView) findViewById(R.id.also_known_tv);
 
+        description.setText(sandwich.getDescription());
+        origin.setText(sandwich.getPlaceOfOrigin());
+
+        List<String> ingredientsList = sandwich.getIngredients();
+        String ingredientsListText = "";
+        for(String ingredient : ingredientsList){
+            ingredientsListText += ingredient;
+        }
+
+        ingredients.setText(ingredientsListText);
+
+        List<String> alsoKnownAsList = sandwich.getAlsoKnownAs();
+        String alsoKnownAsListText = "";
+        for(String alsoKnown : alsoKnownAsList){
+            alsoKnownAsListText += alsoKnown;
+        }
+
+        alsoKnownAs.setText(alsoKnownAsListText);
     }
 }
